@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  hierarchical_transition_image:
+    path: ../
 
 
 

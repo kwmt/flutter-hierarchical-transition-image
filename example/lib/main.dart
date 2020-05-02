@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hierarchical_transition_image/hierarchical_transition_image.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,9 +32,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  Calculator _calculator = Calculator();
+
   void _incrementCounter() {
     setState(() {
-      _counter++;
+      _calculator.addOne();
     });
   }
 
@@ -51,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '${_calculator.value}',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
