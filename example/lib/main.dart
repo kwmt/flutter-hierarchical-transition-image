@@ -31,6 +31,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with HierarchicalTransitionSource {
+
+  @override
+  // TODO: implement transitionDuration
+  int get transitionDuration => 50;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +70,9 @@ class DetailPage extends HierarchicalTransitionImageStatefulWidget {
 
 class _DetailPageState
     extends HierarchicalTransitionDestinationState<DetailPage> {
+  @override
+  // TODO: implement verticalSwipeThreshold
+  double get verticalSwipeThreshold => 50;
   @override
   Widget build(BuildContext context) {
     return destinationContainer(

@@ -4,12 +4,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-const int CONTAINER_REVERSE_DURATION = 200;
-const double VERTICAL_SWIPE_THRESHOLD = 150;
-const double CONTAINER_MIN_OPACITY = 0.3;
-const int TRANSITION_DURATION = 600;
-
 mixin HierarchicalTransitionSource {
+  /// duration time to transition animation (unit: milliseconds)
+  int get transitionDuration => 600;
+
+  /// Need to use page route widget
   Widget sourceContainer<T>(
       BuildContext context, String tag, String image, Widget child) {
     return Container(
@@ -34,7 +33,7 @@ mixin HierarchicalTransitionSource {
                       return FadeTransition(opacity: animation, child: child);
                     },
                     transitionDuration:
-                        const Duration(milliseconds: TRANSITION_DURATION)));
+                        Duration(milliseconds: transitionDuration)));
               }),
         ),
       ),
@@ -45,6 +44,8 @@ mixin HierarchicalTransitionSource {
 abstract class HierarchicalTransitionImageStatefulWidget
     extends StatefulWidget {
   final String _tag;
+
+  /// image path string
   final String image;
 
   HierarchicalTransitionImageStatefulWidget(this._tag, this.image);
@@ -52,39 +53,26 @@ abstract class HierarchicalTransitionImageStatefulWidget
 
 abstract class HierarchicalTransitionDestinationState<
     T extends HierarchicalTransitionImageStatefulWidget> extends State<T> {
-  Offset _beginningDragPosition = Offset.zero;
-  Offset _currentDragPosition = Offset.zero;
-  int _containerReverseDuration = 0;
+  /// a value that background min opacity
+  double get backgroundMinOpacity => 0.3;
 
-  Matrix4 get _containerVerticalTransform {
-    final Matrix4 translationTransform = Matrix4.translationValues(
-      0,
-      _currentDragPosition.dy,
-      0.0,
-    );
+  /// a value that reverse duration
+  int get reverseDuration => 200;
 
-    return translationTransform;
-  }
+  /// a value that swipe vertical move distance threshold
+  double get verticalSwipeThreshold => 150;
 
-  double get _containerBackgroundOpacity {
-    return max(
-        1.0 - _currentDragPosition.distance * 0.003, CONTAINER_MIN_OPACITY);
-  }
-
-  void _rebuild() {
-    setState(() {});
-  }
-
+  /// Need to use a widget in your destination screen
   Widget destinationContainer(Widget child) {
     return Container(
-      color: Colors.black.withOpacity(_containerBackgroundOpacity),
+      color: Colors.black.withOpacity(_backgroundOpacity),
       child: Listener(
         onPointerDown: _onPointerDown,
         onPointerMove: _onPointerMove,
         onPointerUp: _onPointerUp,
         child: AnimatedContainer(
-          duration: Duration(milliseconds: _containerReverseDuration),
-          transform: _containerVerticalTransform,
+          duration: Duration(milliseconds: _reverseDuration),
+          transform: _verticalTransform,
           child: Hero(
               tag: this.widget._tag,
               child: Material(
@@ -96,8 +84,33 @@ abstract class HierarchicalTransitionDestinationState<
     );
   }
 
+  /// private bellow
+
+  Offset _beginningDragPosition = Offset.zero;
+  Offset _currentDragPosition = Offset.zero;
+  int _reverseDuration = 0;
+
+  Matrix4 get _verticalTransform {
+    final Matrix4 translationTransform = Matrix4.translationValues(
+      0,
+      _currentDragPosition.dy,
+      0.0,
+    );
+
+    return translationTransform;
+  }
+
+  double get _backgroundOpacity {
+    return max(
+        1.0 - _currentDragPosition.distance * 0.003, backgroundMinOpacity);
+  }
+
+  void _rebuild() {
+    setState(() {});
+  }
+
   void _onPointerDown(PointerDownEvent event) {
-    _containerReverseDuration = 0;
+    _reverseDuration = 0;
     _beginningDragPosition = event.position;
     _rebuild();
   }
@@ -111,11 +124,10 @@ abstract class HierarchicalTransitionDestinationState<
   }
 
   void _onPointerUp(PointerUpEvent event) {
-    print(_currentDragPosition.distance);
-    if (_currentDragPosition.distance < VERTICAL_SWIPE_THRESHOLD) {
+    if (_currentDragPosition.distance < verticalSwipeThreshold) {
       // Dragしてしきい値超えてなかったら元にもどす。
       _currentDragPosition = Offset.zero;
-      _containerReverseDuration = CONTAINER_REVERSE_DURATION;
+      _reverseDuration = reverseDuration;
       _rebuild();
     } else {
       // しきい値超えたら、前の画面に戻る。
