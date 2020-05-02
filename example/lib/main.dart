@@ -29,15 +29,10 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  Calculator _calculator = Calculator();
-
+class _MyHomePageState extends State<MyHomePage>
+    with HierarchicalTransitionSource {
   void _incrementCounter() {
-    setState(() {
-      _calculator.addOne();
-    });
+    setState(() {});
   }
 
   @override
@@ -46,25 +41,43 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${_calculator.value}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  Widget _buildBody() {
+    return ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          String image = "assets/gopher.png";
+          String tag = "list$index";
+          return sourceContainer<DetailPage>(
+            context,
+            tag,
+            image,
+            DetailPage(tag, image),
+          );
+        });
+  }
+}
+
+class DetailPage extends HierarchicalTransitionImageStatefulWidget {
+  DetailPage(String tag, String image) : super(tag, image);
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState
+    extends HierarchicalTransitionDestinationState<DetailPage> {
+  @override
+  Widget build(BuildContext context) {
+    return destinationContainer(
+        Container(child: Image.asset(this.widget.image)));
   }
 }
