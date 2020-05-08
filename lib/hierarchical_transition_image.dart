@@ -66,19 +66,40 @@ abstract class HierarchicalTransitionDestinationState<
   Widget destinationContainer(Widget child) {
     return Container(
       color: Colors.black.withOpacity(_backgroundOpacity),
-      child: Listener(
-        onPointerDown: _onPointerDown,
-        onPointerMove: _onPointerMove,
-        onPointerUp: _onPointerUp,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: _reverseDuration),
-          transform: _verticalTransform,
-          child: Hero(
-              tag: this.widget._tag,
-              child: Material(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: AnimatedContainer(
+            duration: Duration(milliseconds: _reverseDuration),
+            transform: _verticalCloseButtonTransform,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.close),
+              color: Colors.white.withOpacity(_backgroundCloseButtonOpacity),
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: kToolbarHeight),
+            child: Listener(
+              onPointerDown: _onPointerDown,
+              onPointerMove: _onPointerMove,
+              onPointerUp: _onPointerUp,
+              child: AnimatedContainer(
                 color: Colors.transparent,
-                child: child,
-              )),
+                duration: Duration(milliseconds: _reverseDuration),
+                transform: _verticalTransform,
+                child: Hero(
+                    tag: this.widget._tag,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: child,
+                    )),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -103,6 +124,23 @@ abstract class HierarchicalTransitionDestinationState<
   double get _backgroundOpacity {
     return max(
         1.0 - _currentDragPosition.distance * 0.003, backgroundMinOpacity);
+  }
+
+  /// For close button transform
+  Matrix4 get _verticalCloseButtonTransform {
+    final Matrix4 translationTransform = Matrix4.translationValues(
+      0,
+      min(_currentDragPosition.dy, -_currentDragPosition.dy),
+      0.0,
+    );
+
+    return translationTransform;
+  }
+
+  /// For close button opacity
+  double get _backgroundCloseButtonOpacity {
+    return max(
+        1.0 - _currentDragPosition.distance * 0.03, backgroundMinOpacity);
   }
 
   void _rebuild() {
