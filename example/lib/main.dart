@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with HierarchicalTransitionSource {
   @override
-  int get transitionDuration => 50;
+  int get transitionDuration => 200;
 
   @override
   Widget build(BuildContext context) {
