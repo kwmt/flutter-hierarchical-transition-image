@@ -64,40 +64,37 @@ abstract class HierarchicalTransitionDestinationState<
 
   /// Need to use a widget in your destination screen
   Widget destinationContainer(Widget child) {
-    return Container(
-      color: Colors.black.withOpacity(_backgroundOpacity),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: AnimatedContainer(
-            duration: Duration(milliseconds: _reverseDuration),
-            transform: _verticalCloseButtonTransform,
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.close),
-              color: Colors.white.withOpacity(_backgroundCloseButtonOpacity),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: AnimatedContainer(
+          duration: Duration(milliseconds: _reverseDuration),
+          transform: _verticalCloseButtonTransform,
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.close),
+            color: Colors.white.withOpacity(_backgroundCloseButtonOpacity),
           ),
         ),
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          bottom: true,
-          child: Center(
-            child: Listener(
-              onPointerDown: _onPointerDown,
-              onPointerMove: _onPointerMove,
-              onPointerUp: _onPointerUp,
-              child: AnimatedContainer(
-                color: Colors.transparent,
-                duration: Duration(milliseconds: _reverseDuration),
-                transform: _verticalTransform,
-                child: Hero(
-                    tag: this.widget._tag,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: child,
-                    )),
-              ),
+      ),
+      backgroundColor: Colors.black.withOpacity(_backgroundOpacity),
+      body: SafeArea(
+        bottom: true,
+        child: Center(
+          child: Listener(
+            onPointerDown: _onPointerDown,
+            onPointerMove: _onPointerMove,
+            onPointerUp: _onPointerUp,
+            child: AnimatedContainer(
+              color: Colors.transparent,
+              duration: Duration(milliseconds: _reverseDuration),
+              transform: _verticalTransform,
+              child: Hero(
+                  tag: this.widget._tag,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: child,
+                  )),
             ),
           ),
         ),
