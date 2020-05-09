@@ -23,4 +23,4 @@ jobs:
         channel: stable
     - run: flutter pub get
     - run: flutter test
-    - run: flutter build apk --debug -t example/lib/main.dart
+    - run: cd example && flutter build apk --debug -t lib/main.dart
