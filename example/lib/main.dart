@@ -75,6 +75,8 @@ class _DetailPageState
   @override
   Widget build(BuildContext context) {
     return destinationContainer(
-        Container(child: Image.asset(this.widget.image)));
+        Container(
+          // color: Colors.pink, // You can NOT set a background color you want. It's only black.
+            child: Image.asset(this.widget.image)));
   }
 }
