@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 mixin HierarchicalTransitionSource {
-  /// duration time to transition animation (unit: milliseconds)
+  /// Duration time to transition animation (unit: milliseconds)
   int get transitionDuration => 600;
 
   /// Need to use page route widget
@@ -45,7 +45,7 @@ abstract class HierarchicalTransitionImageStatefulWidget
     extends StatefulWidget {
   final String _tag;
 
-  /// image path string
+  /// Image path string
   final String image;
 
   HierarchicalTransitionImageStatefulWidget(this._tag, this.image);
@@ -53,13 +53,13 @@ abstract class HierarchicalTransitionImageStatefulWidget
 
 abstract class HierarchicalTransitionDestinationState<
     T extends HierarchicalTransitionImageStatefulWidget> extends State<T> {
-  /// a value that background min opacity
+  /// A value that background min opacity
   double get backgroundMinOpacity => 0.3;
 
-  /// a value that reverse duration
+  /// A value that reverse duration
   int get reverseDuration => 200;
 
-  /// a value that swipe vertical move distance threshold
+  /// A value that swipe vertical move distance threshold
   double get verticalSwipeThreshold => 150;
 
   /// Need to use a widget in your destination screen
