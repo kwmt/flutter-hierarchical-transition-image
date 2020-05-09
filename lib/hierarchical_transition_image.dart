@@ -80,9 +80,9 @@ abstract class HierarchicalTransitionDestinationState<
           ),
         ),
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: kToolbarHeight),
+        body: SafeArea(
+          bottom: true,
+          child: Center(
             child: Listener(
               onPointerDown: _onPointerDown,
               onPointerMove: _onPointerMove,
