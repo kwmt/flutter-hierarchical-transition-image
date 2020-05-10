@@ -1,3 +1,5 @@
+![Flutter CI](https://github.com/kwmt/flutter-hierarchical-transition-image/workflows/Flutter%20CI/badge.svg)
+
 # hierarchical_transition_image
 
 
